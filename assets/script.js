@@ -85,7 +85,7 @@ var quizChoice9 = {
     choice4: "Strictly compares two operands that must have the same value without conversion",
 };
 var quizChoice10 = {
-    choice1: "'For loops', 'While loops', 'Do-While loops'",
+    choice1: "'For', 'While', 'Do-While'",
     choice2: "'Fruit', 'hula', 'basketball'",
     choice3: "'else', 'else if', 'function'",
     choice4: "None of the above",
@@ -146,9 +146,9 @@ function nextQuestion(){
 };
 
 // Validates user answer, then adds or subtracts time based on validation
-quizSection.addEventListener("click", correctAnswer)
+quizSection.addEventListener("click", answer);
 
-function correctAnswer(event) {
+function answer(event) {
     if(event.target.matches(".btn-question")){
         var chosenAnswer = event.target.textContent;
         validate.textContent = "";
@@ -210,4 +210,20 @@ userScores.addEventListener("click", function() {
         p.textContent = user + ": " + scores;
         document.querySelector(".user-scores").appendChild(p);
     }
+});
+
+// Clears High Score data from local storage
+document.querySelector(".clear-highscores").addEventListener("click", function() {
+    localStorage.clear();
+    document.querySelector(".user-scores").textContent = " ";
+    document.querySelector(".user-scores").display = "none";
+});
+
+// Re-Starts the Quiz
+document.querySelector(".try-again").addEventListener ("click", function() {
+    correctIndex = 0;
+    secondsLeft = 50;
+    timer.textContent = "Time: 50 Seconds"
+    document.querySelector(".card-main").style.display = "block";
+    highScorePage.style.display = "none";
 });
