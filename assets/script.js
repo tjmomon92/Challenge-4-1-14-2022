@@ -1,9 +1,12 @@
 var startQuizBtn = document.querySelector(".startBtn");
+var timer = document.querySelector("#timer");
 var timerInterval;
-var secondsLeft = 100;
+var secondsLeft = 50;
 var quizSection = document.querySelector(".quiz-questions");
+var correctIndex = 0;
 
 // Questions Array
+var questionsArray = [question1, question2, question3, question4, question5, question6, question7, question8, question9, question10]
 var question1 = "What is JavaScript?"
 var question2 = "What is the main difference between Java and JavScript?"
 var question3 = "What are the JavaScript data types?"
@@ -14,9 +17,9 @@ var question7 = "Which syntax is used for single-line comments in JavaScript?"
 var question8 = "What is the difference between ViewState and SessionState?"
 var question9 = "What does the '===' operator do?"
 var question10 = "What are all of the looping structures in JavaScript?"
-var questionsArray = [question1, question2, question3, question4, question5, question6, question7, question8, question9, question10]
 
 // Answer Array
+var answersArray = [quizChoice1, quizChoice2, quizChoice3, quizChoice4, quizChoice5, quizChoice6, quizChoice7, quizChoice8, quizChoice9, quizChoice10]
 var quizChoice1 = {
     choice1: "Nothing but dark magic from the devil box",
     choice2: "JavaScript is a compiled language used to make the website interactive",
@@ -77,9 +80,9 @@ var quizChoice10 = {
     choice3: "'else', 'else if', 'function'",
     choice4: "None of the above",
 }
-var answersArray = [quizChoice1, quizChoice2, quizChoice3, quizChoice4, quizChoice5, quizChoice6, quizChoice7, quizChoice8, quizChoice9, quizChoice10]
 
 // Correct Answer Array
+var correctArray = [correct1, correct2, correct3, correct4, correct5, correct6, correct7, correct8, correct9, correct10]
 var correct1 = quizChoice1.choice3;
 var correct2 = quizChoice2.choice2;
 var correct3 = quizChoice3.choice1;
@@ -90,13 +93,12 @@ var correct7 = quizChoice7.choice2;
 var correct8 = quizChoice8.choice1;
 var correct9 = quizChoice9.choice3;
 var correct10 = quizChoice10.choice1;
-var correctArray = [correct1, correct2, correct3, correct4, correct5, correct6, correct7, correct8, correct9, correct10]
 
 // Starts the quiz
 startQuizBtn.addEventListener("click", startTimer);
 startQuizBtn.addEventListener("click", hideIntro);
 
-// Timer countdown function
+// function to start timer on quiz start
 function startTimer() {
     timerInterval = setInterval(function() {
         secondsLeft --;
@@ -109,14 +111,20 @@ function startTimer() {
     return timerInterval;
 }
 
+// Function to hide intro screen
 function hideIntro() {
     document.querySelector(".card-main").style.display = "none";
     quizSection.style.display = "block";
     nextQuestion();
 }
 
-// Function to move to next question
+// Function to populate next question
 function nextQuestion(){
+    var answer1 = document.querySelector(".answer1");
+    var answer2 = document.querySelector(".answer2");
+    var answer3 = document.querySelector(".answer3");
+    var answer4 = document.querySelector(".answer4");   
+    var question = document.querySelector(".question");
     if(correctIndex === questionsArray.length) {
         setTimeout (function() {quizSection.style.display = "none";
         initialsSection.style.display = "inline";
@@ -130,3 +138,28 @@ function nextQuestion(){
         answer4.textContent = answersArray[correctIndex].choice4;
     }
 }
+
+// Validates user answer, then adds or subtracts time based on validation
+quizSection.addEventListener("click", correctAnswer)
+
+function correctAnswer(event){
+    var validate = document.querySelector("#validateAnswer");
+    if(event.target.matches(".btn-question")){
+        var chosenAnswer = event.target.textContent;
+        validate.textContent = "";
+        validate.style.display = "block";
+            if(chosenAnswer === correctArray[correctIndex]) {
+                validate.textContent = "Correct";
+                setTimeout(function() {validate.style.display = "none"}, 1000);
+                secondsLeft += 10;
+                timer.textContent = "Time: " + secondsLeft + " seconds";
+            } else {
+                validate.textContent = "Incorrect";
+                setTimeout(function() {validate.style.display = "none"}, 1000);
+                secondsLeft -= 10;
+                timer.textContent = "Time: " + secondsLeft + " seconds";
+            }
+            correctIndex++;
+    }
+    return secondsLeft;
+};
