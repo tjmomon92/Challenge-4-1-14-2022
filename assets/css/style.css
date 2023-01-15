@@ -73,6 +73,8 @@ h1 {
     border-radius: 30px;
     margin-top: 10px;
     background: white;
+    border-width: 1px;
+    box-shadow: 0px 5px 10px 0px black;
 }
 
 .footer1 {
