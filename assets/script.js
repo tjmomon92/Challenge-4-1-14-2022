@@ -1,3 +1,4 @@
+// Global var
 var startQuizBtn = document.querySelector(".startBtn");
 var timer = document.querySelector("#timer");
 var timerInterval;
@@ -6,16 +7,14 @@ var quizSection = document.querySelector(".quiz-questions");
 var correctIndex = 0;
 var validate = document.querySelector("#validateAnswer");
 var submitButton = document.querySelector(".submit-btn");
-var viewScores = document.querySelector("#highscore");
+var userScores = document.querySelector("#highscore");
 var highScorePage = document.querySelector(".highscores-card");
-// var highScoreSection = document.querySelector(".highscores-section");
 var nameEntry = document.querySelector(".high-score");
 var answer1 = document.querySelector(".answer1");
 var answer2 = document.querySelector(".answer2");
 var answer3 = document.querySelector(".answer3");
 var answer4 = document.querySelector(".answer4");   
 var question = document.querySelector(".question");
-
 
 // Questions Array
 var question1 = "What is JavaScript?"
@@ -123,7 +122,7 @@ function startTimer() {
     return timerInterval;
 };
 
-// Function to hide intro screen
+// Function to move to next card on quiz start
 function hideIntro() {
     document.querySelector(".card-main").style.display = "none";
     quizSection.style.display = "block";
@@ -170,6 +169,7 @@ function correctAnswer(event) {
     return secondsLeft;
 };
 
+// Calls next question in array
 quizSection.addEventListener("click", function(event){
     if (event.target.matches(".btn-question")) {
         nextQuestion();
@@ -184,15 +184,30 @@ function newUser() {
     }
     localStorage.setItem(userInitial, secondsLeft);
     document.querySelector(".user-scores").textContent = " ";
-    var a = document.createElement("a");
+    var p = document.createElement("p");
     a.textContent = userInitial + ": " + secondsLeft;
     document.querySelector(".user-scores").appendChild(p);
 };
 
+// eventListener on 'Submit' button to save user score to localStorage
 submitButton.addEventListener("click", function(event) {
     event.preventDefault();
     newUser();
-        initialsSection.style.display = "none";
-        document.querySelector(".highscores-card").style.display = "block";
-        document.querySelector(".user-scores").style.display = "block";
+});
+
+// Calls leaderboard card and populates scores from localStorage
+userScores.addEventListener("click", function() {
+    clearInterval(timerInterval);
+    document.querySelector(".card-main").style.display = "none";
+    quizSection.style.display = "none";
+    nameEntry.style.display = "none";
+    highScorePage.style.display = "block";
+    document.querySelector(".user-scores").textContent = " ";
+    for (let i = 0; i< localStorage.length; i++) {
+        var p = document.createElement("p");
+        var user = localStorage.key(i);
+        var scores = localStorage.getItem(localStorage.key(i));
+        p.textContent = user + ": " + scores;
+        document.querySelector(".user-scores").appendChild(p);
+    }
 });
