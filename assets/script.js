@@ -7,6 +7,7 @@ var quizSection = document.querySelector(".quiz-questions");
 var correctIndex = 0;
 var validate = document.querySelector("#validateAnswer");
 var submitButton = document.querySelector(".submit-btn");
+var submitResponse = document.querySelector("#submitResponse");
 var userScores = document.querySelector("#highscore");
 var highScorePage = document.querySelector(".highscores-card");
 var nameEntry = document.querySelector(".high-score");
@@ -195,6 +196,14 @@ submitButton.addEventListener("click", function(event) {
     newUser();
 });
 
+// Adds a 'Success' message upon initial submission
+submitButton.addEventListener("click", function(event){
+    event.preventDefault();
+    if (event.target.matches(".submit-btn")) {
+        submitResponse.textContent = "Success!";
+    }
+});
+
 // Calls leaderboard card and populates scores from localStorage
 userScores.addEventListener("click", function() {
     clearInterval(timerInterval);
@@ -226,4 +235,15 @@ document.querySelector(".try-again").addEventListener ("click", function() {
     timer.textContent = "Time: 50 Seconds"
     document.querySelector(".card-main").style.display = "block";
     highScorePage.style.display = "none";
+    nameEntry.style.display = "none";
+});
+
+// Re-Starts the Quiz from leaderboard
+document.querySelector(".restart").addEventListener ("click", function() {
+    correctIndex = 0;
+    secondsLeft = 50;
+    timer.textContent = "Time: 50 Seconds"
+    document.querySelector(".card-main").style.display = "block";
+    highScorePage.style.display = "none";
+    nameEntry.style.display = "none";
 });
